@@ -1,0 +1,442 @@
+@startuml
+left to right direction
+scale 0.8
+enum "flag_values" as C_0001247597954932712848
+enum C_0001247597954932712848 {
+unflagged
+filter_rolloff
+low_spectral_kurtosis
+high_spectral_kurtosis
+RESERVED_0
+magnitude
+sigma_clip
+RESERVED_1
+RESERVED_2
+}
+class "freq_drift_coord" as C_0001254231707759864635
+class C_0001254231707759864635 {
+__
++drift_index : int64_t
++frequency_channel : int64_t
+}
+class "protohit" as C_0010753626758910923243
+class C_0010753626758910923243 {
+__
++binwidth : int
++desmeared_noise : float
++index_center : freq_drift_coord
++index_max : freq_drift_coord
++locations : std::vector<freq_drift_coord>
++max_integration : float
++rfi_counts : rfi
++snr : float
+}
+class "device_protohit" as C_0018125164878858240098
+class C_0018125164878858240098 {
+__
++binwidth : int
++desmeared_noise : float
++high_sk_count : uint8_t
++index_center : freq_drift_coord
++index_max : freq_drift_coord
++invalidated_by : int
++low_sk_count : uint8_t
++max_integration : float
++sigma_clip_count : uint8_t
++snr : float
+}
+class "hit" as C_0017331418930955387533
+class C_0017331418930955387533 {
++operator<(const hit & other) const : bool
++operator==(const hit & other) const : bool
+..
++get_state() const : state_tuple
++repr() const : std::string
++set_state(state_tuple state) : void
+__
++bandwidth : float
++binwidth : int64_t
++coarse_channel_number : int64_t
++drift_rate_Hz_per_sec : double
++duration_sec : double
++integrated_channels : int64_t
++power : double
++rate_index : int64_t
++rfi_counts : rfi
++snr : float
++start_freq_MHz : double
++start_freq_index : int64_t
++start_time_sec : double
++time_span_steps : int64_t
+}
+class "integrate_drifts_options" as C_0008234394632491960752
+class C_0008234394632491960752 {
+__
++desmear : bool
++high_rate_Hz_per_sec : float
++low_rate_Hz_per_sec : float
++resolution : int
+}
+class "integrated_flags" as C_0004254590603068670054
+class C_0004254590603068670054 {
++integrated_flags(int64_t drifts, int64_t channels, bland::ndarray::dev device = DLDevice { .device_type = kDLCPU, .device_id = 0 }) : void
+..
++push_device() : void
++set_device(bland::ndarray::dev device) : void
++set_device(std::string_view device) : void
+__
++_device : bland::ndarray::dev
++high_spectral_kurtosis : bland::ndarray
++low_spectral_kurtosis : bland::ndarray
++sigma_clip : bland::ndarray
+}
+class "protohit_drift_info" as C_0011423803646825428631
+class C_0011423803646825428631 {
+__
++integration_adjusted_noise : float
+}
+class "frequency_drift_plane" as C_0003385453215179043378
+class C_0003385453215179043378 {
++frequency_drift_plane(bland::ndarray drift_plane, integrated_flags drift_rfi) : void
++frequency_drift_plane(bland::ndarray drift_plane, integrated_flags drift_rfi, int64_t integration_steps, std::vector<drift_rate> dri) : void
+..
++drift_rate_info() : std::vector<drift_rate>
++integrated_drift_plane() : bland::ndarray
++integrated_rfi() : integrated_flags
++integration_steps() : int64_t
++push_device() : void
++set_device(bland::ndarray::dev dev) : void
++set_device(std::string_view dev_str) : void
+__
+-_dedrifted_rfi : integrated_flags
+-_device : bland::ndarray::dev
+-_drift_rate_info : std::vector<drift_rate>
+-_integrated_drifts : bland::ndarray
+-_integration_steps : int64_t
+}
+class "frequency_drift_plane::drift_rate" as C_0013711378979703555358
+class C_0013711378979703555358 {
++repr() const : std::string
+__
++desmeared_bins : int
++drift_channels_span : int
++drift_rate_Hz_per_sec : double
++drift_rate_slope : double
++index_in_plane : int
+}
+class "noise_stats" as C_0008878523823298988897
+class C_0008878523823298988897 {
++noise_amplitude() : float
++noise_floor() : float
++noise_power() : float
++repr() const : std::string
++set_noise_floor(bland::ndarray noise_floor) : void
++set_noise_power(bland::ndarray noise_power) : void
+__
+#_noise_floor : bland::ndarray
+#_noise_power : bland::ndarray
+}
+class "coarse_channel" as C_0004226958907069096628
+class C_0004226958907069096628 {
++coarse_channel(double fch1, double foff, int64_t machine_id, int64_t nbits, int64_t nchans, int64_t ntsteps, int64_t nifs, std::string source_name, double src_dej, double src_raj, int64_t telescope_id, double tsamp, double tstart, int64_t data_type, double az_start, double za_start, int64_t coarse_channel_number = 0) : void
++coarse_channel(double fch1, double foff, std::optional<int64_t> machine_id, std::optional<int64_t> nbits, int64_t nchans, int64_t ntsteps, int64_t nifs, std::string source_name, std::optional<double> src_dej, std::optional<double> src_raj, std::optional<int64_t> telescope_id, double tsamp, double tstart, int64_t data_type, std::optional<double> az_start, std::optional<double> za_start, int64_t coarse_channel_number = 0) : void
++coarse_channel(std::function<bland::ndarray ()> data, std::function<bland::ndarray ()> mask, double fch1, double foff, std::optional<int64_t> machine_id, std::optional<int64_t> nbits, int64_t nchans, int64_t ntsteps, int64_t nifs, std::string source_name, std::optional<double> src_dej, std::optional<double> src_raj, std::optional<int64_t> telescope_id, double tsamp, double tstart, int64_t data_type, std::optional<double> az_start, std::optional<double> za_start, int64_t coarse_channel_number = 0) : void
++coarse_channel(bland::ndarray data, bland::ndarray mask, double fch1, double foff, int64_t machine_id, int64_t nbits, int64_t nchans, int64_t ntsteps, int64_t nifs, std::string source_name, double src_dej, double src_raj, int64_t telescope_id, double tsamp, double tstart, int64_t data_type, double az_start, double za_start, int64_t coarse_channel_number = 0) : void
+..
++az_start() const : double
++data() : bland::ndarray
++data_type() const : int64_t
++device() : bland::ndarray::dev
++fch1() const : double
++foff() const : double
++has_hits() : bool
++hits() const : std::list<hit>
++integrated_drift_plane() : frequency_drift_plane
++machine_id() const : int64_t
++mask() : bland::ndarray
++nbits() const : int64_t
++nchans() const : int64_t
++nifs() const : int64_t
++noise_estimate() const : noise_stats
++ntsteps() const : int64_t
++push_device() : void
++set_data(bland::ndarray new_mask) : void
++set_device(std::string_view device) : void
++set_device(bland::ndarray::dev & device) : void
++set_hits(std::function<std::list<hit> ()> find_hits_func) : void
++set_hits(std::list<hit> new_hits) : void
++set_integrated_drift_plane(std::function<frequency_drift_plane ()> integrated_plane) : void
++set_integrated_drift_plane(frequency_drift_plane integrated_plane) : void
++set_mask(bland::ndarray new_mask) : void
++set_noise_estimate(noise_stats estimate) : void
++source_name() const : std::string
++src_dej() const : double
++src_raj() const : double
++telescope_id() const : int64_t
++tsamp() const : double
++tstart() const : double
++za_start() const : double
+__
++_az_start : std::optional<double>
++_coarse_channel_number : int64_t
++_data : bland::ndarray
++_data_type : int64_t
++_device : bland::ndarray::dev
++_fch1 : double
++_foff : double
++_hits : std::shared_ptr<std::variant<std::list<hit>,std::function<std::list<hit> ()>>>
++_integrated_drift_plane : std::shared_ptr<std::variant<frequency_drift_plane,std::function<frequency_drift_plane ()>>>
++_machine_id : std::optional<int64_t>
++_mask : bland::ndarray
++_nbits : std::optional<int64_t>
++_nchans : int64_t
++_nifs : int64_t
++_noise_stats : std::optional<noise_stats>
++_ntsteps : int64_t
++_source_name : std::string
++_src_dej : std::optional<double>
++_src_raj : std::optional<double>
++_telescope_id : std::optional<int64_t>
++_tsamp : double
++_tstart : double
++_za_start : std::optional<double>
+}
+class "scan" as C_0001623697155288920931
+class C_0001623697155288920931 {
++scan() = default : void
++scan(std::map<int,std::shared_ptr<coarse_channel>> coarse_channels) : void
++scan(h5_filterbank_file fb_file, int num_fine_channels_per_coarse = 0) : void
++scan(std::string_view file_path, int num_fine_channels_per_coarse = 0) : void
+..
++add_coarse_channel_transform(std::function<coarse_channel (coarse_channel)> transform, std::string description = "") : void
++az_start() const : double
++data_type() const : int64_t
++device() : bland::ndarray::dev
++fch1() const : double
++foff() const : double
++get_coarse_channel_with_frequency(double frequency) const : int
++get_drift_range() : std::pair<float,float>
++get_file_path() const : std::string
++get_number_coarse_channels() const : int
++hits() : std::list<hit>
++machine_id() const : int64_t
++nbits() const : int64_t
++nchans() const : int64_t
++nifs() const : int64_t
++ntsteps() const : int64_t
++peak_coarse_channel(int coarse_channel_index = 0) : std::shared_ptr<coarse_channel>
++push_device() : void
++read_coarse_channel(int coarse_channel_index = 0) : std::shared_ptr<coarse_channel>
++set_az_start(double) : void
++set_data_type(int64_t) : void
++set_device(std::string_view device, bool verbose = true) : void
++set_device(bland::ndarray::dev & device, bool verbose = true) : void
++set_fch1(double) : void
++set_foff(double) : void
++set_machine_id(int64_t) : void
++set_nbits(int64_t) : void
++set_nchans(int64_t) : void
++set_nifs(int64_t) : void
++set_source_name(std::string) : void
++set_src_dej(double) : void
++set_src_raj(double) : void
++set_telescope_id(int64_t) : void
++set_tsamp(double) : void
++set_tstart(double) : void
++set_za_start(double) : void
++slice_scan_channels(int64_t start_channel = 0, int64_t count = 1) : scan
++source_name() const : std::string
++src_dej() const : double
++src_raj() const : double
++tduration_secs() const : double
++telescope_id() const : int64_t
++tsamp() const : double
++tstart() const : double
++za_start() const : double
+__
+#_az_start : std::optional<double>
+#_coarse_channel_offset : int64_t
+#_coarse_channel_pipeline : std::vector<transform_stage>
+#_coarse_channels : std::map<int,std::shared_ptr<coarse_channel>>
+#_data_type : int64_t
+#_device : bland::ndarray::dev
+#_fch1 : double
+#_fine_channels_per_coarse : int
+#_foff : double
+#_h5_file_handle : std::shared_ptr<h5_filterbank_file>
+#_machine_id : std::optional<int64_t>
+#_nbits : int64_t
+#_nchans : int64_t
+#_nifs : int64_t
+#_ntsteps : int64_t
+#_num_coarse_channels : int64_t
+#_source_name : std::string
+#_src_dej : std::optional<double>
+#_src_raj : std::optional<double>
+#_tduration_secs : double
+#_telescope_id : std::optional<int64_t>
+#_tsamp : double
+#_tstart : double
+#_za_start : std::optional<double>
+}
+class "scan::transform_stage" as C_0005084232250300958933
+class C_0005084232250300958933 {
+__
++description : std::string
++transform : std::function<coarse_channel (coarse_channel)>
+}
+class "observation_target" as C_0016711749131889121738
+class C_0016711749131889121738 {
++observation_target() = default : void
++observation_target(std::vector<scan> filterbanks) : void
++observation_target(std::vector<std::string> filterbank_paths, int fine_channels_per_coarse = 0) : void
+..
++device() : bland::ndarray::dev
++get_coarse_channel_with_frequency(double frequency) : int
++get_number_coarse_channels() : int
++set_device(bland::ndarray::dev & device, bool verbose = true) : void
++set_device(std::string_view device_str, bool verbose = true) : void
++slice_observation_channels(int64_t start_channel = 0, int64_t count = 1) : observation_target
++validate_scan_consistency() : bool
+__
+#_device : bland::ndarray::dev
++_scans : std::vector<scan>
++_target_name : std::string
+}
+class "cadence" as C_0014457524300077497087
+class C_0014457524300077497087 {
++cadence() = default : void
++cadence(std::vector<observation_target> observations) : void
++cadence(std::vector<std::vector<std::string>> observations, int fine_channels_per_coarse = 0) : void
+..
++device() : bland::ndarray::dev
++get_coarse_channel_with_frequency(double frequency) : int
++get_number_coarse_channels() : int
++set_device(bland::ndarray::dev & device, bool verbose = true) : void
++set_device(std::string_view device_str, bool verbose = true) : void
++slice_cadence_channels(int64_t start_channel = 0, int64_t count = 1) : cadence
++validate_scan_consistency() : bool
+__
+#_device : bland::ndarray::dev
++_observations : std::vector<observation_target>
+}
+class "event" as C_0015368806002355176777
+class C_0015368806002355176777 {
++repr() : std::string
+__
++average_bandwidth : float
++average_drift_rate_Hz_per_sec : double
++average_power : float
++average_snr : float
++event_end_seconds : double
++event_start_seconds : double
++hits : std::list<hit>
++starting_frequency_Hz : double
+}
+class "h5_filterbank_file" as C_0018031303369807924530
+class C_0018031303369807924530 {
++h5_filterbank_file(std::string_view file_path) : void
+..
++get_data_shape() : std::vector<int64_t>
++get_file_path() const : std::string
++read_data(std::vector<int64_t> offset = = {}, std::vector<int64_t> count = = {}) : bland::ndarray
++read_data_attr<T>(const std::string & key) : T
++read_file_attr<T>(const std::string & key) : T
++read_mask(std::vector<int64_t> offset = = {}, std::vector<int64_t> count = = {}) : bland::ndarray
++repr() : std::string
+__
+-_h5_data_handle : H5::DataSet
+-_h5_file_handle : H5::H5File
+-_h5_mask_handle : std::optional<H5::DataSet>
+}
+enum "noise_power_estimator" as C_0000436974381597378520
+enum C_0000436974381597378520 {
+STDDEV
+MEAN_ABSOLUTE_DEVIATION
+}
+class "noise_power_estimate_options" as C_0007176641406169295710
+class C_0007176641406169295710 {
+__
++estimator_method : noise_power_estimator
++masked_estimate : bool
+}
+class "filter_options" as C_0014244917699091056142
+class C_0014244917699091056142 {
+__
++filter_high_sk : bool
++filter_low_sk : bool
++filter_sigmaclip : bool
++filter_zero_drift : bool
++maximum_percent_low_sk : float
++minimum_percent_high_sk : float
++minimum_percent_sigmaclip : float
+}
+enum "hit_search_methods" as C_0002645168464261597059
+enum C_0002645168464261597059 {
+CONNECTED_COMPONENTS
+LOCAL_MAXIMA
+}
+class "hit_search_options" as C_0000569888550555450853
+class C_0000569888550555450853 {
+__
++detach_graph : bool
++method : hit_search_methods
++neighbor_l1_dist : int
++snr_threshold : float
+}
+class "::hit_distance" as C_0004379099766720621202
+class C_0004379099766720621202 {
++operator()(hit p1, hit p2) : float
+__
++distance_cache : std::map<std::pair<hit,hit>,float,hit_pair_comparator>
+}
+class "::hit_distance::hit_pair_comparator" as C_0003241644134396389985
+class C_0003241644134396389985 {
++operator()(const std::pair<hit,hit> & p1, const std::pair<hit,hit> & p2) const : bool
+__
+}
+class "detail::raii_file_for_write" as C_0013027858765854108164
+class C_0013027858765854108164 {
++raii_file_for_write(std::string_view file_path) : void
++~raii_file_for_write() : void
+__
++_fd : int
+}
+class "detail::raii_file_for_read" as C_0000787139239055201860
+class C_0000787139239055201860 {
++raii_file_for_read(std::string_view file_path) : void
++~raii_file_for_read() : void
+__
++_fd : int
+}
+C_0010753626758910923243 o-- C_0001254231707759864635 : +index_max
+C_0010753626758910923243 o-- C_0001254231707759864635 : +index_center
+C_0010753626758910923243 o-- C_0001254231707759864635 : +locations
+C_0010753626758910923243 o-- C_0001247597954932712848 : +rfi_counts
+C_0018125164878858240098 o-- C_0001254231707759864635 : +index_max
+C_0018125164878858240098 o-- C_0001254231707759864635 : +index_center
+C_0017331418930955387533 o-- C_0001247597954932712848 : +rfi_counts
+C_0003385453215179043378 ..> C_0013711378979703555358
+C_0003385453215179043378 o-- C_0004254590603068670054 : -_dedrifted_rfi
+C_0013711378979703555358 --+ C_0003385453215179043378
+C_0004226958907069096628 o-- C_0008878523823298988897 : +_noise_stats
+C_0004226958907069096628 --> C_0003385453215179043378 : +_integrated_drift_plane
+C_0004226958907069096628 --> C_0017331418930955387533 : +_hits
+C_0001623697155288920931 ..> C_0017331418930955387533
+C_0001623697155288920931 o-- C_0004226958907069096628 : #_coarse_channels
+C_0001623697155288920931 --> C_0018031303369807924530 : #_h5_file_handle
+C_0005084232250300958933 --+ C_0001623697155288920931
+C_0005084232250300958933 ..> C_0004226958907069096628 : +transform
+C_0016711749131889121738 o-- C_0001623697155288920931 : +_scans
+C_0014457524300077497087 o-- C_0016711749131889121738 : +_observations
+C_0015368806002355176777 o-- C_0017331418930955387533 : +hits
+C_0007176641406169295710 o-- C_0000436974381597378520 : +estimator_method
+C_0000569888550555450853 o-- C_0002645168464261597059 : +method
+C_0004379099766720621202 o-- C_0017331418930955387533 : +distance_cache
+C_0004379099766720621202 o-- C_0003241644134396389985 : +distance_cache
+C_0003241644134396389985 --+ C_0004379099766720621202
+C_0003241644134396389985 ..> C_0017331418930955387533
+
+'Generated with clang-uml, version 0.6.2
+'LLVM version Ubuntu clang version 18.1.3 (1ubuntu1)
+@enduml
