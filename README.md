@@ -34,4 +34,5 @@ Mapping of the dynamic execution flow related to the main command `bliss_find_hi
 ## External References
 
 * Original BLISS software repository: [n-west/bliss](https://github.com/n-west/bliss)
+* Refactored code forked from the official UCBerkeley repository [Mastrone/bliss](https://github.com/Mastrone/bliss)
 * Information on the SETI project and Breakthrough Listen: [Berkeley SETI Research Center](https://seti.berkeley.edu/)
