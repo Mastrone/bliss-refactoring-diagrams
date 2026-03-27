@@ -10,9 +10,6 @@ This repository contains the high-resolution architectural and sequence diagrams
 
 The diagrams document the software engineering and refactoring process applied to the **BLISS** (Breakthrough Listen Interesting Signal Search) pipeline, a high-performance, GPU-accelerated SETI search software. All diagrams were generated using the `clang-uml` static analysis tool.
 
-> **Sneak Peek:** > *(Insert here a preview image of your best diagram)*
-> `![BLISS Architecture Preview](architecture_diagrams/preview.png)`
-
 ## Repository Structure
 
 The repository is organized into three main categories, structured to provide an objective and direct comparison between the pre-refactoring and post-refactoring code states.
