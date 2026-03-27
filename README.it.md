@@ -31,4 +31,5 @@ Mappatura del flusso di esecuzione dinamico relativo al comando principale `blis
 ## Riferimenti Esterni
 
 * Repository originale del software BLISS: [n-west/bliss](https://github.com/n-west/bliss)
+* Codice post refactoring forkato dalla repository ufficiale di UCBerkeley [Mastrone/bliss](https://github.com/Mastrone/bliss)
 * Informazioni sul progetto SETI e Breakthrough Listen: [Berkeley SETI Research Center](https://seti.berkeley.edu/)
